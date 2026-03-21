@@ -34,22 +34,66 @@ Before starting any work, read the relevant skills from `~/skills/skills/`.
 
 ## Commands
 
-- **"init"** — This is a new project. Read project-scaffold and env-setup skills.
-  Check if we're inside an existing Poetry environment (walk up for pyproject.toml).
-  Scaffold the directory structure, then work on `main` until the project has a
-  working foundation. Ask what the project does and scaffold accordingly.
+### "init" — New Project
 
-- **"upgrade"** — This is an existing project with working code. Read upgrade-repo
-  and git-workflow skills. Create a feature branch (e.g. `refactor/csv-to-db`).
-  Make changes step by step, test after each step, ensure existing code still
-  produces the same output. Only merge to main when everything passes.
-  Infrastructure changes must be transparent — same interfaces, no retraining needed.
+**Do NOT start scaffolding immediately.** First, have a conversation:
+
+1. **Ask the user:**
+   - What does this project do? (one sentence)
+   - What type of work is it? (ML model, data pipeline, paper replication, quant tool, app, etc.)
+   - What data sources will it use?
+   - Are there any reference papers or existing projects to base this on?
+   - Any specific packages or approaches already in mind?
+
+2. **Based on the answers, update this CLAUDE.md:**
+   - Rename this file to `CLAUDE_<directory_name>.md` (e.g. `CLAUDE_vol_pipeline.md`)
+   - Fill in **Project Rules** with the decisions made
+   - Fill in **Architecture** with the planned structure
+   - Fill in **Current State** with the starting point
+   - Add any constraints to **Do NOT**
+
+3. **Confirm the plan with the user** — show them the updated CLAUDE.md
+   and ask "Does this look right? Ready to go?"
+
+4. **Only then start scaffolding** — read project-scaffold and env-setup skills,
+   check for existing Poetry environment, scaffold the directory structure,
+   and work on `main`.
+
+### "upgrade" — Existing Project
+
+**Do NOT start coding immediately.** First, understand the objective:
+
+1. **Ask the user:**
+   - What needs to change? (e.g. "migrate from CSV to DB", "add Heston model", "refactor training loop")
+   - Why? (e.g. "CSV is too slow", "need stochastic vol", "code is messy")
+   - Are there any reference materials? (papers, other projects, docs)
+   - What should NOT break? (existing notebooks, trained models, API interfaces)
+   - What does success look like? (e.g. "same results, faster loading", "new model calibrates with RMSE < 0.01")
+
+2. **Read the existing CLAUDE.md** (or create one if missing) and understand
+   the current project state.
+
+3. **Based on the answers, update the CLAUDE.md:**
+   - Add the upgrade objective to **Current State**
+   - Add any new rules to **Project Rules**
+   - Add constraints to **Do NOT** (e.g. "do not require model retraining")
+   - Update **Architecture** if the structure will change
+
+4. **Present the plan** — show the user:
+   - What branch will be created
+   - What steps will be taken (in order)
+   - What will be tested after each step
+   - What the merge criteria are
+
+5. **Confirm with the user** — "Does this plan look right? Ready to proceed?"
+
+6. **Only then start working** — read upgrade-repo and git-workflow skills,
+   create the branch, and execute step by step.
 
 ## Keeping this file up to date
 
 This file is the source of truth for project configuration. When the user asks
-to change the project (add features, remove components, change architecture),
-update this file to reflect the new state. Specifically:
+to change the project, update this file to reflect the new state:
 
 - Add new project rules under **Project Rules** when decisions are made
 - Add constraints under **Do NOT** when the user says to avoid something
@@ -61,11 +105,11 @@ something, they tell Claude and Claude updates both the code and this file.
 
 ## Project Rules
 
-<!-- Rules will be added here as the project evolves -->
+<!-- Rules will be added here during init or upgrade conversation -->
 
 ## Architecture
 
-<!-- Will be filled in after init or upgrade -->
+<!-- Will be filled in after the init/upgrade conversation -->
 
 ## Current State
 
@@ -73,4 +117,4 @@ something, they tell Claude and Claude updates both the code and this file.
 
 ## Do NOT
 
-<!-- Constraints will be added here as decisions are made -->
+<!-- Constraints will be added here during init/upgrade conversation -->
