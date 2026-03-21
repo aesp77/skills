@@ -118,6 +118,49 @@ app/
     └── charts.py
 ```
 
+#### README.md — Create When the App Is Launchable
+
+Once Stage 3 is working, create or update `README.md` as an instruction manual
+for anyone running the app. Not before — no README for scaffolds or prototypes.
+
+```markdown
+# Project Name
+
+One-line description of what this does.
+
+## Setup
+
+```bash
+poetry install
+cp .env.example .env
+# Edit .env with your credentials
+```
+
+## Run the App
+
+```bash
+poetry run streamlit run app/streamlit_app.py
+```
+
+Or use the VS Code Run & Debug button: **"Project: Streamlit App"**
+
+## Pages
+
+| Page | What it does |
+|------|-------------|
+| Main | [description] |
+| Training | [description] |
+| Validation | [description] |
+
+## Data
+
+[Where the data comes from, how to update it]
+
+```bash
+poetry run python scripts/update_data.py update
+```
+```
+
 ## Banned Patterns
 
 | Do NOT use | Use instead |
@@ -137,3 +180,4 @@ app/
 - [ ] Unit tests exist for extracted modules
 - [ ] Streamlit app imports from `src/`, not re-implemented
 - [ ] `@st.cache_resource` used for model loading
+- [ ] `README.md` created once Streamlit app is working (setup, run, pages, data)
