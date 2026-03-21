@@ -1,12 +1,34 @@
 # SKILL: Project Scaffold
 
-## Trigger
+<!--
+name: project-scaffold
+trigger: Creating a new Python project, restructuring, or adding Poetry/pre-commit/CI
+depends-on: []
+applies-to: [all]
+-->
+
+## When to Apply
+
 Read before creating any new Python project, restructuring an existing one,
-or adding Poetry, pre-commit, or CI.
+or adding Poetry, pre-commit, or CI configuration.
 
----
+## Dependencies
 
-## Directory Structure
+None.
+
+## Rules
+
+1. All projects use Poetry with `src/` layout.
+2. Python >= 3.11 always.
+3. Every project has `CLAUDE.md` at root — project-specific behaviour rules.
+4. Every project has `PATTERNS.md` at root — domain knowledge for that project.
+5. `.env` is never committed. `.env.example` is committed as a template.
+6. Pre-commit is mandatory: ruff + ruff-format + mypy + standard hooks.
+7. No commits directly to `main` — use feature branches.
+
+## Patterns
+
+### Directory Structure
 
 ```
 project-name/
@@ -38,16 +60,14 @@ project-name/
 └── data/
 ```
 
----
-
-## pyproject.toml Template
+### pyproject.toml
 
 ```toml
 [tool.poetry]
 name = "project-name"
 version = "0.1.0"
 description = ""
-authors = ["Ale <ale@portmansquarecapital.com>"]
+authors = ["Ale <ale@example.com>"]
 readme = "README.md"
 packages = [{include = "project_name", from = "src"}]
 
@@ -89,9 +109,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 ```
 
----
-
-## Pre-commit Config
+### Pre-commit Config
 
 ```yaml
 repos:
@@ -117,9 +135,7 @@ repos:
         args: ['--branch', 'main']
 ```
 
----
-
-## .gitignore
+### .gitignore
 
 ```
 __pycache__/
@@ -138,9 +154,7 @@ saved_models/
 checkpoints/
 ```
 
----
-
-## Setup Commands
+### Setup Commands
 
 ```bash
 poetry new project-name --src && cd project-name
@@ -150,3 +164,22 @@ echo "KERAS_BACKEND=torch" >> .env
 pre-commit install
 git init && git add . && git commit -m "chore: initial scaffold"
 ```
+
+## Banned Patterns
+
+| Do NOT use | Use instead |
+|---|---|
+| `pip install` / `requirements.txt` | `poetry add` / `pyproject.toml` |
+| Flat layout (`project_name/` at root) | `src/` layout |
+| Hardcoded config values | Dataclasses or pydantic models |
+| `print()` for logging | `logging` module |
+| Committing `.env` | `.env.example` + `.gitignore` |
+
+## Checklist
+
+- [ ] `src/` layout with `packages = [{include = "...", from = "src"}]`
+- [ ] `CLAUDE.md` exists at project root
+- [ ] `.env.example` committed, `.env` in `.gitignore`
+- [ ] Pre-commit installed and configured
+- [ ] `ruff`, `mypy`, `pytest` in dev dependencies
+- [ ] Python version `^3.11`

@@ -1,25 +1,47 @@
-# SKILL: Notebook → Module → Streamlit Workflow
+# SKILL: Notebook to Module to Streamlit Workflow
 
-## Trigger
-Read before creating any notebook or Streamlit app.
+<!--
+name: notebook-workflow
+trigger: Creating or modifying notebooks, extracting code to modules, or building Streamlit apps
+depends-on: [keras3-pytorch, project-scaffold]
+applies-to: [all]
+-->
 
----
+## When to Apply
 
-## The Three Stages
+Read before creating any notebook, extracting notebook code into modules, or
+building a Streamlit app. Enforces the three-stage pipeline from exploration
+to production.
+
+## Dependencies
+
+- **keras3-pytorch** — notebooks must set `KERAS_BACKEND=torch` in cell 1.
+- **project-scaffold** — notebooks and apps live in the standard directory structure.
+
+## Rules
+
+1. All production logic lives in `src/` — never in notebooks.
+2. Never skip stages: Notebook -> Module -> Streamlit.
+3. Every notebook cell 1 sets `KERAS_BACKEND=torch` before any keras import.
+4. Every notebook last cell documents findings and what to extract.
+5. Notebooks are numbered sequentially: `01_`, `02_`, etc.
+6. Streamlit apps import from `src/` — never re-implement logic.
+7. Use `@st.cache_resource` for model loading in Streamlit.
+8. For rl-deep-hedging: continue numbering from NB21 (next is NB22).
+
+## Patterns
+
+### The Three Stages
 
 ```
 Stage 1: Exploration Notebook     (notebooks/01_*.ipynb)  — throwaway
-    ↓  extract and test
+    |  extract and test
 Stage 2: Validated Module         (src/project_name/...)  — tested, typed
-    ↓  wrap in interface
+    |  wrap in interface
 Stage 3: Streamlit App            (app/streamlit_app.py)  — production
 ```
 
-Never skip stages. Do not put production logic in notebooks.
-
----
-
-## Stage 1 Rules
+### Stage 1 — Exploration Notebook
 
 ```python
 # Cell 1: always set backend before keras
@@ -33,7 +55,8 @@ TO EXTRACT TO src/: [list of functions/classes]
 """
 ```
 
-### Notebook naming
+#### Notebook naming
+
 ```
 notebooks/
 ├── 01_data_exploration.ipynb
@@ -43,16 +66,12 @@ notebooks/
 └── 05_production_prep.ipynb
 ```
 
-For rl-deep-hedging: continue from NB21, next is NB22.
-
----
-
-## Stage 2 Rules
+### Stage 2 — Validated Module
 
 1. Every function: type signature + Google-style docstring
-2. Every module: unit tests in tests/
-3. Config → dataclass, not hardcoded
-4. No print() → use logging
+2. Every module: unit tests in `tests/`
+3. Config via dataclass, not hardcoded values
+4. No `print()` — use `logging`
 5. Validate output matches notebook before deleting cells
 
 ```python
@@ -66,15 +85,11 @@ class EncoderConfig:
     hidden_units: int = 64
 
 class VolSurfaceEncoder(keras.Model):
-    """
-    VAE encoder. Extracted from notebooks/02_model_architecture.ipynb.
-    """
+    """VAE encoder. Extracted from notebooks/02_model_architecture.ipynb."""
     def __init__(self, config: EncoderConfig): ...
 ```
 
----
-
-## Stage 3 Rules
+### Stage 3 — Streamlit App
 
 ```python
 # app/streamlit_app.py
@@ -88,10 +103,11 @@ from src.models.encoder import VolSurfaceEncoder  # import from src/, never reim
 def load_model():
     return VolSurfaceEncoder(EncoderConfig())
 
-st.set_page_config(page_title="PSC App", layout="wide")
+st.set_page_config(page_title="App", layout="wide")
 ```
 
-### App structure
+#### App structure
+
 ```
 app/
 ├── streamlit_app.py
@@ -101,3 +117,23 @@ app/
 └── components/
     └── charts.py
 ```
+
+## Banned Patterns
+
+| Do NOT use | Use instead |
+|---|---|
+| Production logic in notebooks | Extract to `src/`, import back |
+| Skipping Stage 2 (notebook -> Streamlit directly) | Always go through validated module |
+| Re-implementing logic in Streamlit | Import from `src/` |
+| `print()` in modules | `logging` |
+| Hardcoded config in modules | `dataclass` or pydantic config |
+| Un-numbered notebooks | Sequential `01_`, `02_`, ... naming |
+
+## Checklist
+
+- [ ] Notebook cell 1 sets `KERAS_BACKEND=torch`
+- [ ] Notebook last cell has `FINDINGS` and `TO EXTRACT` summary
+- [ ] Extracted modules have type signatures and docstrings
+- [ ] Unit tests exist for extracted modules
+- [ ] Streamlit app imports from `src/`, not re-implemented
+- [ ] `@st.cache_resource` used for model loading
