@@ -90,18 +90,27 @@ Before starting any work, read the relevant skills from `~/skills/skills/`.
 6. **Only then start working** — read upgrade-repo and git-workflow skills,
    create the branch, and execute step by step.
 
-## Keeping this file up to date
+## Keeping this file and PROGRESS.md up to date
 
-This file is the source of truth for project configuration. When the user asks
-to change the project, update this file to reflect the new state:
+**CLAUDE.md** is the source of truth for project configuration.
+**PROGRESS.md** is the source of truth for what's been done and what's next.
 
+When the user asks to change the project, update both files:
+
+**CLAUDE.md updates:**
 - Add new project rules under **Project Rules** when decisions are made
 - Add constraints under **Do NOT** when the user says to avoid something
 - Update **Architecture** when the project structure changes
 - Update **Current State** when branches, active work, or known issues change
 
-The user should never need to edit this file by hand. If they want to change
-something, they tell Claude and Claude updates both the code and this file.
+**PROGRESS.md updates:**
+- Move completed work from "In Progress" to "Done"
+- Add new work to "In Progress" when starting
+- Add planned work to "Next" when discussed
+- Record key decisions under "Decisions" with date and reasoning
+
+The user should never need to edit these files by hand. If they want to change
+something, they tell Claude and Claude updates the code and both files.
 
 ## Project Rules
 
@@ -118,3 +127,30 @@ something, they tell Claude and Claude updates both the code and this file.
 ## Do NOT
 
 <!-- Constraints will be added here during init/upgrade conversation -->
+
+---
+
+# PROGRESS.md Template
+
+Create `PROGRESS.md` in the project root during init. Keep it updated
+as work progresses. Format:
+
+```markdown
+# Progress
+
+## Done
+<!-- Completed milestones — add date and one-line summary -->
+
+## In Progress
+<!-- What's currently being worked on -->
+
+## Next
+<!-- Planned but not started — in priority order -->
+
+## Decisions
+<!-- Key decisions made, with date and reasoning -->
+<!-- e.g. 2026-03-21: Chose Optuna over Keras Tuner — better pruning support -->
+
+## References
+<!-- Papers, links, other projects informing this work -->
+```

@@ -131,7 +131,7 @@ fix: handle NaN in vol surface interpolation
 refactor: extract training loop into separate module
 test: add hypothesis tests for GBM simulation
 chore: bump keras to 3.1
-docs: update PATTERNS.md with new normalisation
+docs: update PROGRESS.md with completed milestones
 migrate: switch vol_pipeline from CSV to DB
 ```
 

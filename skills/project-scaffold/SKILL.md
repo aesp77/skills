@@ -21,7 +21,7 @@ None.
 1. All projects use Poetry with `src/` layout.
 2. Python >= 3.11 always.
 3. Every project has `CLAUDE.md` at root — project-specific behaviour rules.
-4. Every project has `PATTERNS.md` at root — domain knowledge for that project.
+4. Every project has `PROGRESS.md` at root — tracks what's done, in progress, and next.
 5. `.env` is never committed. `.env.example` is committed as a template.
 6. Pre-commit is mandatory: ruff + ruff-format + mypy + standard hooks.
 7. No commits directly to `main` — use feature branches.
@@ -33,7 +33,7 @@ None.
 ```
 project-name/
 ├── CLAUDE.md                  # Project behaviour rules
-├── PATTERNS.md                # Project domain knowledge
+├── PROGRESS.md                # What's done, in progress, and next
 ├── pyproject.toml
 ├── .env                       # Never committed
 ├── .env.example               # Template (committed)
