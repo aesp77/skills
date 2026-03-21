@@ -158,11 +158,21 @@ checkpoints/
 
 ### VS Code Run & Debug (.vscode/launch.json)
 
-Every project should have a `.vscode/launch.json` so you can run and debug
-from the VS Code sidebar. Create this during project init.
+Every project should have Run & Debug configs. **Before creating the file,
+detect where it should go** using the same Poetry root detection from env-setup.
+
+#### Step 1 — Detect where launch.json belongs
+
+Use `find_poetry_root()` from the env-setup skill to walk up the directory tree.
+
+- **Parent Poetry root found** (e.g. `ale/`) → this is a monorepo. The user
+  opens `ale/` in VS Code, so `launch.json` must go at `ale/.vscode/launch.json`.
+- **No parent found** → standalone project. Put it at `<project>/.vscode/launch.json`.
+
+#### Case A — Standalone Project
 
 ```jsonc
-// .vscode/launch.json
+// <project>/.vscode/launch.json
 {
     "version": "0.2.0",
     "configurations": [
@@ -193,10 +203,7 @@ from the VS Code sidebar. Create this during project init.
             "request": "launch",
             "module": "pytest",
             "justMyCode": false,
-            "args": [
-                "tests",
-                "-v"
-            ]
+            "args": ["tests", "-v"]
         },
         {
             "name": "Debug Script",
@@ -210,28 +217,78 @@ from the VS Code sidebar. Create this during project init.
 }
 ```
 
-**Customise per project:**
-- **Streamlit App**: change `app/streamlit_app.py` to your app's entry point
-- **Add project-specific scripts**: copy the "Run Script" block, replace `${file}` with the script path, give it a name
-- **Add update_data**: for projects with market data, add a config to run `scripts/update_data.py`
+#### Case B — Monorepo Subdirectory
 
-Example — adding project-specific entries:
+The launch.json goes at the **Poetry root** (e.g. `ale/.vscode/launch.json`).
+Prefix every config name with the project name so configs from different
+projects don't clash. Set `cwd` and `PYTHONPATH` to point at the subdirectory.
 
 ```jsonc
+// ale/.vscode/launch.json — configs for reddit-top-stocks project
+{
+    "name": "Reddit: Streamlit App",
+    "type": "python",
+    "request": "launch",
+    "module": "streamlit",
+    "justMyCode": true,
+    "cwd": "${workspaceFolder}/reddit-top-stocks",
+    "env": {
+        "PYTHONPATH": "${workspaceFolder}/reddit-top-stocks/src"
+    },
+    "args": [
+        "run",
+        "app/streamlit_app.py",
+        "--server.runOnSave",
+        "true"
+    ]
+},
+{
+    "name": "Reddit: Run Tests",
+    "type": "python",
+    "request": "launch",
+    "module": "pytest",
+    "justMyCode": false,
+    "cwd": "${workspaceFolder}/reddit-top-stocks",
+    "env": {
+        "PYTHONPATH": "${workspaceFolder}/reddit-top-stocks/src"
+    },
+    "args": ["tests", "-v"]
+},
+{
+    "name": "Reddit: Update Data",
+    "type": "python",
+    "request": "launch",
+    "program": "${workspaceFolder}/reddit-top-stocks/scripts/update_data.py",
+    "args": ["update"],
+    "console": "integratedTerminal",
+    "cwd": "${workspaceFolder}/reddit-top-stocks",
+    "justMyCode": true
+}
+```
+
+**If `launch.json` already exists** at the Poetry root (from another project),
+**merge** the new configs into the existing `configurations` array — do not
+overwrite the file.
+
+#### Adding project-specific entries
+
+For either case, add entries for common project tasks:
+
+```jsonc
+{
+    "name": "Train Model",
+    "type": "python",
+    "request": "launch",
+    "program": "scripts/train.py",
+    "console": "integratedTerminal",
+    "justMyCode": true
+},
 {
     "name": "Update Market Data",
     "type": "python",
     "request": "launch",
     "program": "scripts/update_data.py",
     "args": ["update"],
-    "console": "integratedTerminal",
-    "justMyCode": true
-},
-{
-    "name": "Train Model",
-    "type": "python",
-    "request": "launch",
-    "program": "scripts/train.py",
     "console": "integratedTerminal",
     "justMyCode": true
 }
@@ -270,6 +327,7 @@ results/
 | Hardcoded config values | Dataclasses or pydantic models |
 | `print()` for logging | `logging` module |
 | Committing `.env` | `.env.example` + `.gitignore` |
+| `launch.json` inside a subdirectory when workspace root is the parent | Detect Poetry root, place `launch.json` there |
 
 ## Checklist
 
@@ -279,4 +337,6 @@ results/
 - [ ] Pre-commit installed and configured
 - [ ] `ruff`, `mypy`, `pytest` in dev dependencies
 - [ ] Python version `^3.11`
-- [ ] `.vscode/launch.json` with Run & Debug configs (Streamlit, tests, scripts)
+- [ ] `.vscode/launch.json` placed at correct level (Poetry root for monorepo, project root for standalone)
+- [ ] Monorepo configs prefixed with project name (e.g. "Reddit: Streamlit App")
+- [ ] Monorepo configs have `cwd` and `PYTHONPATH` set to project subdirectory
