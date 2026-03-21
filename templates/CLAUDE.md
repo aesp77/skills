@@ -45,17 +45,20 @@ Before starting any work, read the relevant skills from `~/skills/skills/`.
    - Are there any reference papers or existing projects to base this on?
    - Any specific packages or approaches already in mind?
 
-2. **Based on the answers, update this CLAUDE.md:**
-   - Rename this file to `CLAUDE_<directory_name>.md` (e.g. `CLAUDE_vol_pipeline.md`)
+2. **Save the answers into this CLAUDE.md immediately:**
+   - Add the project name and description at the top of this file (under the `# CLAUDE.md` heading)
    - Fill in **Project Rules** with the decisions made
    - Fill in **Architecture** with the planned structure
    - Fill in **Current State** with the starting point
    - Add any constraints to **Do NOT**
+   - Write the file now — do not wait until later
 
-3. **Confirm the plan with the user** — show them the updated CLAUDE.md
+3. **Create PROGRESS.md** with the initial plan under "Next".
+
+4. **Confirm the plan with the user** — show them the updated CLAUDE.md
    and ask "Does this look right? Ready to go?"
 
-4. **Only then start scaffolding** — read project-scaffold and env-setup skills,
+5. **Only then start scaffolding** — read project-scaffold and env-setup skills,
    check for existing Poetry environment, scaffold the directory structure,
    and work on `main`.
 
@@ -70,14 +73,14 @@ Before starting any work, read the relevant skills from `~/skills/skills/`.
    - What should NOT break? (existing notebooks, trained models, API interfaces)
    - What does success look like? (e.g. "same results, faster loading", "new model calibrates with RMSE < 0.01")
 
-2. **Read the existing CLAUDE.md** (or create one if missing) and understand
-   the current project state.
-
-3. **Based on the answers, update the CLAUDE.md:**
+2. **Save the answers into CLAUDE.md immediately:**
    - Add the upgrade objective to **Current State**
    - Add any new rules to **Project Rules**
    - Add constraints to **Do NOT** (e.g. "do not require model retraining")
    - Update **Architecture** if the structure will change
+   - Write the file now — do not wait until later
+
+3. **Update PROGRESS.md** — add the upgrade objective to "In Progress".
 
 4. **Present the plan** — show the user:
    - What branch will be created
