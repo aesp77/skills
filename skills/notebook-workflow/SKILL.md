@@ -136,6 +136,22 @@ cp .env.example .env
 # Edit .env with your credentials
 ```
 
+## Project Structure
+
+```
+├── src/project_name/       # Core logic (models, data, training)
+├── app/                    # Streamlit app (entry point: streamlit_app.py)
+├── notebooks/              # Exploration and study notebooks
+├── papers/                 # Academic papers and replications
+├── tests/                  # Unit and integration tests
+├── scripts/                # Utility scripts (update_data.py, train.py)
+├── data/                   # Market data and databases
+├── saved_models/           # Trained model versions
+├── results/                # Experiment logs
+├── CLAUDE.md               # Project config (read by Claude Code)
+└── PROGRESS.md             # What's done, in progress, and next
+```
+
 ## Run the App
 
 ```bash
@@ -151,6 +167,13 @@ Or use the VS Code Run & Debug button: **"Project: Streamlit App"**
 | Main | [description] |
 | Training | [description] |
 | Validation | [description] |
+
+## Key Modules
+
+| Module | What it does |
+|--------|-------------|
+| `src/project_name/models/` | [description] |
+| `src/project_name/data/` | [description] |
 
 ## Data
 
