@@ -99,14 +99,13 @@ This repo (~/skills/)          Your project (~/my-project/)
 | [upgrade-repo](skills/upgrade-repo/SKILL.md) | Step-by-step repo upgrade on a branch |
 | [skills-manager](skills/skills-manager/SKILL.md) | Adding new skills, syncing across projects |
 
-## Templates
+## Template
+
+One generic template — the `init` conversation customises it for your project:
 
 | Template | Use for |
 |----------|---------|
-| [CLAUDE.md](templates/CLAUDE.md) | Any project — generic, works immediately |
-| [CLAUDE-vol_pipeline.md](templates/CLAUDE-vol_pipeline.md) | Vol surface calibration |
-| [CLAUDE-coco_model.md](templates/CLAUDE-coco_model.md) | CoCo bond pricing |
-| [CLAUDE-rl-deep-hedging.md](templates/CLAUDE-rl-deep-hedging.md) | Deep hedging RL |
+| [CLAUDE.md](templates/CLAUDE.md) | Any project — drop in, say `init` or `upgrade` |
 
 ## Adding a New Skill
 
