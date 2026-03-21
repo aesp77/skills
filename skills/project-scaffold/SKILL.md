@@ -39,6 +39,8 @@ project-name/
 ├── .env.example               # Template (committed)
 ├── .pre-commit-config.yaml
 ├── .gitignore
+├── .vscode/
+│   └── launch.json            # Run & Debug configs (committed)
 ├── README.md
 ├── src/
 │   └── project_name/
@@ -154,15 +156,109 @@ saved_models/
 checkpoints/
 ```
 
-### Setup Commands
+### VS Code Run & Debug (.vscode/launch.json)
 
-```bash
-poetry new project-name --src && cd project-name
-poetry env use python3.11
-poetry install
-echo "KERAS_BACKEND=torch" >> .env
-pre-commit install
-git init && git add . && git commit -m "chore: initial scaffold"
+Every project should have a `.vscode/launch.json` so you can run and debug
+from the VS Code sidebar. Create this during project init.
+
+```jsonc
+// .vscode/launch.json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Streamlit App",
+            "type": "python",
+            "request": "launch",
+            "module": "streamlit",
+            "justMyCode": true,
+            "args": [
+                "run",
+                "app/streamlit_app.py",
+                "--server.runOnSave",
+                "true"
+            ]
+        },
+        {
+            "name": "Run Script",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "Run Tests",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",
+            "justMyCode": false,
+            "args": [
+                "tests",
+                "-v"
+            ]
+        },
+        {
+            "name": "Debug Script",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        }
+    ]
+}
+```
+
+**Customise per project:**
+- **Streamlit App**: change `app/streamlit_app.py` to your app's entry point
+- **Add project-specific scripts**: copy the "Run Script" block, replace `${file}` with the script path, give it a name
+- **Add update_data**: for projects with market data, add a config to run `scripts/update_data.py`
+
+Example — adding project-specific entries:
+
+```jsonc
+{
+    "name": "Update Market Data",
+    "type": "python",
+    "request": "launch",
+    "program": "scripts/update_data.py",
+    "args": ["update"],
+    "console": "integratedTerminal",
+    "justMyCode": true
+},
+{
+    "name": "Train Model",
+    "type": "python",
+    "request": "launch",
+    "program": "scripts/train.py",
+    "console": "integratedTerminal",
+    "justMyCode": true
+}
+```
+
+### .gitignore
+
+Note: `launch.json` is NOT gitignored — it should be committed so the
+Run & Debug buttons work for anyone opening the project.
+`settings.json` IS gitignored (personal preferences).
+
+```
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+build/
+.env
+data/raw/
+output/
+*.db
+*.sqlite
+.ipynb_checkpoints/
+.vscode/settings.json
+saved_models/
+checkpoints/
+results/
 ```
 
 ## Banned Patterns
@@ -183,3 +279,4 @@ git init && git add . && git commit -m "chore: initial scaffold"
 - [ ] Pre-commit installed and configured
 - [ ] `ruff`, `mypy`, `pytest` in dev dependencies
 - [ ] Python version `^3.11`
+- [ ] `.vscode/launch.json` with Run & Debug configs (Streamlit, tests, scripts)
