@@ -234,6 +234,56 @@ REPLICATION RESULTS:
 """
 ```
 
+### Step 5b — NotebookLM README (Optional)
+
+After validation, generate a README structured for NotebookLM ingestion.
+Upload it to a NotebookLM notebook so you can query the paper's concepts
+and your implementation interactively.
+
+```markdown
+# [Paper Title] — Implementation Notes
+
+## What This Is
+[2-3 sentences: paper claim, what we implemented, what we didn't]
+
+## Key Equations Implemented
+[For each major equation: the equation, which file/function implements it]
+- Eq. (3): CVaR loss → `src/losses.py:cvar_loss()`
+- Eq. (7): GBM simulation → `src/simulation.py:simulate_gbm()`
+
+## How the Code Is Organised
+[File-by-file: what each file does, which paper section it implements]
+| File | Paper Section | What it does |
+|------|--------------|-------------|
+| `notebooks/03_basic_replication.ipynb` | Section 3 | Simplified 1D version |
+| `notebooks/04_full_replication.ipynb` | Sections 3-5 | Full implementation |
+| `src/models/hedging_network.py` | Section 4.2 | Neural network architecture |
+
+## Design Decisions & Deviations
+[Numbered: where we diverged and why]
+1. Used CVaR alpha=0.05 instead of 0.5 — better tail coverage for our data
+2. Substituted SPX options from FirstRate for paper's simulated data
+
+## Results vs Paper
+| Metric | Paper | Ours | Match? |
+|--------|-------|------|--------|
+| CVaR | 0.0234 | 0.0241 | ~yes |
+
+## Glossary
+[Domain terms — especially useful for NotebookLM Q&A]
+- **CVaR**: Conditional Value at Risk — expected loss in worst alpha% of outcomes
+- **Reparameterisation trick**: Separate noise from parameters so gradients flow
+```
+
+**After generating:** upload this README to a NotebookLM notebook for that paper.
+Then you can ask NotebookLM source-grounded questions like:
+- "What does the paper say about handling missing data?"
+- "Does our deviation in Step 3 match the paper's stated tolerance?"
+- "Explain the reparameterisation trick as used in this paper"
+
+**If NotebookLM MCP is configured** (see env-setup skill), you can query
+directly from Claude Desktop without switching apps.
+
 ### Step 6 — Adaptation (Notebook 06)
 
 Apply to your problem. Document every change.
@@ -316,3 +366,4 @@ If unfavourable, document why in `notes.md` and move on.
 - [ ] Adaptation notebook (06) documents every change from original
 - [ ] Useful code extracted to main project's `src/`, not paper directory
 - [ ] Paper notebooks preserved as study material
+- [ ] NotebookLM README generated and uploaded (if using NotebookLM)

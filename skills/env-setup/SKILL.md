@@ -239,6 +239,39 @@ Point VS Code to the shared Poetry environment.
 }
 ```
 
+### NotebookLM MCP Setup (One-Time, Optional)
+
+To query NotebookLM notebooks from Claude Desktop (useful with the
+paper-replication skill):
+
+```powershell
+# 1. Clone the integration
+git clone https://github.com/ray-manaloto/notebooklm-claude-integration.git
+cd notebooklm-claude-integration
+
+# 2. Install dependencies
+npm install
+
+# 3. Authenticate with Google (opens browser, one-time login)
+npm run authenticate
+```
+
+Add to Claude Desktop config (`%APPDATA%\Claude\claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "notebooklm": {
+      "command": "node",
+      "args": ["C:/path/to/notebooklm-claude-integration/mcp-desktop/server.js"]
+    }
+  }
+}
+```
+
+Restart Claude Desktop. Works with **Claude Desktop only** (not VS Code extension).
+Use Claude Desktop for NotebookLM queries, VS Code for coding.
+
 ## Banned Patterns
 
 | Do NOT do | Do instead |
