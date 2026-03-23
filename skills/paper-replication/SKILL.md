@@ -37,17 +37,19 @@ You find a paper
       ↓
 1. STUDY (NotebookLM)     — Upload PDF, listen to audio overview, Q&A
       ↓
-2. SUMMARISE (NotebookLM) — Create a README/notes summarising what you learned
+2. SUMMARISE (NotebookLM) — Generate a README with scientific background
       ↓
-3. DROP INTO PROJECT      — Save the README + PDF into papers/<short-name>/
+3. DROP INTO PROJECT      — README.md at project root, paper.pdf in papers/
       ↓
-4. BUILD (Claude Code)    — Claude reads your notes, uses skills to build notebooks
+4. BUILD (Claude Code)    — Claude reads README, uses skills to build notebooks
       ↓
 5. REPLICATE              — Simple → complex notebooks, validate vs paper
       ↓
 6. ADAPT                  — Apply to your specific problem
       ↓
 7. EXTRACT                — Useful code graduates to main project's src/
+      ↓
+8. UPDATE README          — Add setup/run instructions when app is ready
 ```
 
 **NotebookLM does what it's best at:** understanding papers (audio summaries,
@@ -66,23 +68,24 @@ Production code graduates to the main project's `src/`.
 
 ```
 project-root/
-├── src/                                    # production code (main project)
+├── README.md                              # ← from NotebookLM — scientific background
+│                                          #    updated later with setup/run instructions
+├── src/                                   # production code
 │   └── project_name/
 │       └── models/
-│           └── deep_hedging.py             # ← extracted from paper notebooks
+│           └── deep_hedging.py            # ← extracted from paper notebooks
 │
-├── papers/                                 # study material (stays here)
+├── papers/                                # reference material
 │   └── deep-hedging-buehler-2019/
-│       ├── paper.pdf                       # original paper
-│       ├── README.md                       # ← from NotebookLM (your summary)
-│       ├── notes.md                        # ← Claude's structured extraction
+│       ├── paper.pdf                      # original paper
+│       ├── notes.md                       # ← Claude's structured extraction
 │       └── notebooks/
-│           ├── 01_paper_breakdown.ipynb    # read & understand
-│           ├── 02_data_setup.ipynb         # prepare data
-│           ├── 03_basic_replication.ipynb  # simplest version first
-│           ├── 04_full_replication.ipynb   # complete implementation
-│           ├── 05_validation.ipynb         # compare vs paper's numbers
-│           └── 06_my_adaptation.ipynb      # apply to my problem
+│           ├── 01_paper_breakdown.ipynb   # read & understand
+│           ├── 02_data_setup.ipynb        # prepare data
+│           ├── 03_basic_replication.ipynb # simplest version first
+│           ├── 04_full_replication.ipynb  # complete implementation
+│           ├── 05_validation.ipynb        # compare vs paper's numbers
+│           └── 06_my_adaptation.ipynb     # apply to my problem
 ```
 
 ### Notebook Evolution — Simple to Complex
@@ -111,16 +114,19 @@ This happens outside Claude Code. You do this yourself:
 
 1. Upload the paper PDF to a NotebookLM notebook
 2. Use NotebookLM to understand it — audio overview, Q&A, highlights
-3. Create a README.md in NotebookLM summarising:
-   - What the paper claims
+3. Generate a README.md summarising:
+   - What problem the paper addresses and why it matters
    - The key method/algorithm in your own words
-   - Which equations matter
+   - Which equations and results are important
    - What data they used
-   - What you want to replicate and why
-4. Save the README.md and paper.pdf into `papers/<short-name>/`
+   - How this relates to your project
+4. Drop the files into your project:
+   - `README.md` → **project root** (this is the project's scientific story)
+   - `paper.pdf` → `papers/<short-name>/paper.pdf` (reference)
 
-This README is what Claude Code reads to understand your intent. The better
-your summary, the better Claude can build the notebooks.
+The README is both the project's front page on GitHub AND the context Claude
+Code reads to understand what to build. It tells the scientific story — like
+the introduction of your own paper.
 
 ### Step 1 — Paper Breakdown (notes.md)
 

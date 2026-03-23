@@ -118,16 +118,25 @@ app/
     └── charts.py
 ```
 
-#### README.md — Create When the App Is Launchable
+#### README.md — Two Phases
 
-Once Stage 3 is working, create or update `README.md` as an instruction manual
-for anyone running the app. Not before — no README for scaffolds or prototypes.
+The README lives at the project root and evolves in two phases:
+
+**Phase 1 — Scientific background (created early)**
+If the project is based on a paper, the README starts as the scientific
+story — generated via NotebookLM (see paper-replication skill). This
+gives the project context on GitHub and helps Claude Code understand
+what to build. For projects without a paper, create a short README
+explaining what the project does and why.
+
+**Phase 2 — Add practical sections (when app is ready)**
+Once Stage 3 is working, update the README with setup, run instructions,
+directory structure, and pages overview. Don't replace the scientific
+content — add to it.
+
+Sections to add in Phase 2:
 
 ```markdown
-# Project Name
-
-One-line description of what this does.
-
 ## Setup
 
 ```bash
@@ -203,4 +212,5 @@ poetry run python scripts/update_data.py update
 - [ ] Unit tests exist for extracted modules
 - [ ] Streamlit app imports from `src/`, not re-implemented
 - [ ] `@st.cache_resource` used for model loading
-- [ ] `README.md` created once Streamlit app is working (setup, run, pages, data)
+- [ ] `README.md` Phase 1: scientific background (created early, from paper or project description)
+- [ ] `README.md` Phase 2: setup/run/structure added when Streamlit app is ready
