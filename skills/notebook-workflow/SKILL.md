@@ -134,6 +134,29 @@ Once Stage 3 is working, update the README with setup, run instructions,
 directory structure, and pages overview. Don't replace the scientific
 content — add to it.
 
+**Phase 3 — Scope and application (when project is complete)**
+Document what the project actually achieved, how it can be applied,
+and what the limitations are. This is the "so what?" section.
+
+Sections to add in Phase 3:
+
+```markdown
+## Scope & Application
+
+### What This Project Does
+[Clear statement of what was built and what it achieves]
+
+### Use Cases
+[Concrete examples of how to apply this — e.g. "price lookback options on SPX",
+"detect market instability in real-time", "compare hedging strategies"]
+
+### Limitations
+[What this does NOT do, assumptions made, known edge cases]
+
+### Future Work
+[What could be added next — features, models, data sources]
+```
+
 Sections to add in Phase 2:
 
 ```markdown
@@ -214,3 +237,4 @@ poetry run python scripts/update_data.py update
 - [ ] `@st.cache_resource` used for model loading
 - [ ] `README.md` Phase 1: scientific background (created early, from paper or project description)
 - [ ] `README.md` Phase 2: setup/run/structure added when Streamlit app is ready
+- [ ] `README.md` Phase 3: scope, use cases, limitations, future work added when project is complete
