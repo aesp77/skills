@@ -30,6 +30,35 @@ implementing a method, or adapting a published approach to your own problem.
 
 ## Patterns
 
+### The Flow — NotebookLM for Understanding, Claude Code for Building
+
+```
+You find a paper
+      ↓
+1. STUDY (NotebookLM)     — Upload PDF, listen to audio overview, Q&A
+      ↓
+2. SUMMARISE (NotebookLM) — Create a README/notes summarising what you learned
+      ↓
+3. DROP INTO PROJECT      — Save the README + PDF into papers/<short-name>/
+      ↓
+4. BUILD (Claude Code)    — Claude reads your notes, uses skills to build notebooks
+      ↓
+5. REPLICATE              — Simple → complex notebooks, validate vs paper
+      ↓
+6. ADAPT                  — Apply to your specific problem
+      ↓
+7. EXTRACT                — Useful code graduates to main project's src/
+```
+
+**NotebookLM does what it's best at:** understanding papers (audio summaries,
+source-grounded Q&A, multi-document synthesis).
+
+**Claude Code does what it's best at:** building code using your skills, your
+project context, your patterns.
+
+If NotebookLM MCP is configured (see env-setup skill), Claude Code can also
+query your NotebookLM notebooks directly for clarification during implementation.
+
 ### Directory Structure
 
 Paper work lives in its own directory. It stays there for study and reference.
@@ -45,7 +74,8 @@ project-root/
 ├── papers/                                 # study material (stays here)
 │   └── deep-hedging-buehler-2019/
 │       ├── paper.pdf                       # original paper
-│       ├── notes.md                        # extracted summary
+│       ├── README.md                       # ← from NotebookLM (your summary)
+│       ├── notes.md                        # ← Claude's structured extraction
 │       └── notebooks/
 │           ├── 01_paper_breakdown.ipynb    # read & understand
 │           ├── 02_data_setup.ipynb         # prepare data
@@ -75,9 +105,28 @@ This progression means:
 - A reader can follow your thinking from simple to complex
 - If notebook 04 breaks, you still have 03 as a working baseline
 
+### Step 0 — Study in NotebookLM (Before Claude Code)
+
+This happens outside Claude Code. You do this yourself:
+
+1. Upload the paper PDF to a NotebookLM notebook
+2. Use NotebookLM to understand it — audio overview, Q&A, highlights
+3. Create a README.md in NotebookLM summarising:
+   - What the paper claims
+   - The key method/algorithm in your own words
+   - Which equations matter
+   - What data they used
+   - What you want to replicate and why
+4. Save the README.md and paper.pdf into `papers/<short-name>/`
+
+This README is what Claude Code reads to understand your intent. The better
+your summary, the better Claude can build the notebooks.
+
 ### Step 1 — Paper Breakdown (notes.md)
 
-Do this before writing any code.
+Claude reads the README.md you created in NotebookLM, then generates a
+structured `notes.md` with implementation-specific details. If there's no
+README.md from NotebookLM, Claude extracts this directly from the paper PDF.
 
 ```markdown
 # Paper: [Title]
@@ -234,55 +283,18 @@ REPLICATION RESULTS:
 """
 ```
 
-### Step 5b — NotebookLM README (Optional)
+### Querying NotebookLM During Implementation (Optional)
 
-After validation, generate a README structured for NotebookLM ingestion.
-Upload it to a NotebookLM notebook so you can query the paper's concepts
-and your implementation interactively.
+If you get stuck during implementation, go back to NotebookLM and ask
+source-grounded questions:
+- "What does Section 4.2 say about the network architecture?"
+- "What tolerance does the paper accept for calibration RMSE?"
+- "How do they handle missing data in the vol surface?"
 
-```markdown
-# [Paper Title] — Implementation Notes
+Paste the answers into your notebook as context for Claude Code.
 
-## What This Is
-[2-3 sentences: paper claim, what we implemented, what we didn't]
-
-## Key Equations Implemented
-[For each major equation: the equation, which file/function implements it]
-- Eq. (3): CVaR loss → `src/losses.py:cvar_loss()`
-- Eq. (7): GBM simulation → `src/simulation.py:simulate_gbm()`
-
-## How the Code Is Organised
-[File-by-file: what each file does, which paper section it implements]
-| File | Paper Section | What it does |
-|------|--------------|-------------|
-| `notebooks/03_basic_replication.ipynb` | Section 3 | Simplified 1D version |
-| `notebooks/04_full_replication.ipynb` | Sections 3-5 | Full implementation |
-| `src/models/hedging_network.py` | Section 4.2 | Neural network architecture |
-
-## Design Decisions & Deviations
-[Numbered: where we diverged and why]
-1. Used CVaR alpha=0.05 instead of 0.5 — better tail coverage for our data
-2. Substituted SPX options from FirstRate for paper's simulated data
-
-## Results vs Paper
-| Metric | Paper | Ours | Match? |
-|--------|-------|------|--------|
-| CVaR | 0.0234 | 0.0241 | ~yes |
-
-## Glossary
-[Domain terms — especially useful for NotebookLM Q&A]
-- **CVaR**: Conditional Value at Risk — expected loss in worst alpha% of outcomes
-- **Reparameterisation trick**: Separate noise from parameters so gradients flow
-```
-
-**After generating:** upload this README to a NotebookLM notebook for that paper.
-Then you can ask NotebookLM source-grounded questions like:
-- "What does the paper say about handling missing data?"
-- "Does our deviation in Step 3 match the paper's stated tolerance?"
-- "Explain the reparameterisation trick as used in this paper"
-
-**If NotebookLM MCP is configured** (see env-setup skill), you can query
-directly from Claude Desktop without switching apps.
+**If NotebookLM MCP is configured** (see env-setup skill), Claude Desktop
+can query your NotebookLM notebooks directly without switching apps.
 
 ### Step 6 — Adaptation (Notebook 06)
 
@@ -366,4 +378,4 @@ If unfavourable, document why in `notes.md` and move on.
 - [ ] Adaptation notebook (06) documents every change from original
 - [ ] Useful code extracted to main project's `src/`, not paper directory
 - [ ] Paper notebooks preserved as study material
-- [ ] NotebookLM README generated and uploaded (if using NotebookLM)
+- [ ] NotebookLM used for paper study (if available) — README.md dropped into paper directory
