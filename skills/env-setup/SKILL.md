@@ -177,7 +177,10 @@ KERAS_BACKEND=torch
 # MARQUEE_CLIENT_SECRET=...
 
 # FirstRate Data
-# FIRSTRATE_API_KEY=...
+# FirstRate Data
+FIRSTRATE_BASE_URL=https://firstratedata.com/api/data_file
+FIRSTRATE_LAST_UPDATE_URL=https://firstratedata.com/api/last_update
+FIRSTRATE_USER_ID=QQgoG4i9pUS2KxmPmLWvGw
 
 # Optional: GPU
 # CUDA_VISIBLE_DEVICES=0

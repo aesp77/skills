@@ -33,7 +33,10 @@ can be copied between projects to avoid re-downloading.
 
 ```bash
 # .env (never committed — add keys for your data sources)
-# FIRSTRATE_API_KEY=...
+# FirstRate Data
+FIRSTRATE_BASE_URL=https://firstratedata.com/api/data_file
+FIRSTRATE_LAST_UPDATE_URL=https://firstratedata.com/api/last_update
+FIRSTRATE_USER_ID=QQgoG4i9pUS2KxmPmLWvGw
 # BBG_HOST=localhost
 # BBG_PORT=8194
 # MARQUEE_CLIENT_ID=...
