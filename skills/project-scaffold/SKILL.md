@@ -166,6 +166,11 @@ project-name/
 
 #### sys.path pattern for pages
 
+**IMPORTANT:** Do NOT import `from streamlit_app.utils...` — Streamlit
+manages `streamlit_app/` as a special directory and importing it as a
+package causes intermittent `KeyError: 'streamlit_app'`. Instead, add
+`streamlit_app/` to sys.path and import `from utils...` directly.
+
 Each page file (`streamlit_app/pages/*.py`) needs:
 
 ```python
@@ -173,8 +178,15 @@ import sys
 from pathlib import Path
 
 _project_root = str(Path(__file__).parent.parent.parent)
-sys.path.insert(0, _project_root)                          # for streamlit_app.utils.*
-sys.path.insert(0, str(Path(_project_root) / "src"))       # for project_name.*
+sys.path.insert(0, str(Path(_project_root) / "src"))             # for project_name.*
+sys.path.insert(0, str(Path(_project_root) / "streamlit_app"))   # for utils.*
+```
+
+Then import as:
+```python
+from utils.database import query_data        # NOT from streamlit_app.utils.database
+from utils.sidebar_config import render_sidebar
+from project_name.models.foo import Bar      # library code from src/
 ```
 
 The main `app.py` (`streamlit_app/app.py`) needs:
@@ -183,9 +195,8 @@ The main `app.py` (`streamlit_app/app.py`) needs:
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))           # project root
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))   # src/
-sys.path.insert(0, str(Path(__file__).parent))                  # streamlit_app/ (for relative utils imports)
+sys.path.insert(0, str(Path(__file__).parent))                  # streamlit_app/ (for utils.*)
 ```
 
 #### Launch command
@@ -433,6 +444,7 @@ results/
 | Committing `.env` | `.env.example` + `.gitignore` |
 | `launch.json` inside a subdirectory when workspace root is the parent | Detect Poetry root, place `launch.json` there |
 | Relying on `PYTHONPATH` for Streamlit imports | Explicit `sys.path.insert()` in every page file |
+| `from streamlit_app.utils...` in page files | `from utils...` (add `streamlit_app/` to sys.path) |
 | Defaulting date ranges to full DB range | Default to analysis window (e.g. 2015+) |
 | Testing only imports after restructure | Test every page button and verify output |
 
