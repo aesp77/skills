@@ -137,6 +137,110 @@ repos:
         args: ['--branch', 'main']
 ```
 
+### Streamlit App with `src/` Layout
+
+When a project has a Streamlit dashboard alongside `src/` library code,
+**every page file must explicitly add both the project root and `src/` to
+`sys.path`**. Do NOT rely on `PYTHONPATH` — Streamlit runs pages as
+subprocesses that don't reliably inherit environment variables on Windows.
+
+#### Directory structure
+
+```
+project-name/
+├── src/
+│   └── project_name/          # Library code
+│       ├── models/
+│       └── data/
+├── streamlit_app/             # Dashboard (NOT inside src/)
+│   ├── app.py                 # Main entry point
+│   ├── utils/                 # App-specific helpers
+│   │   ├── config.py
+│   │   ├── database.py
+│   │   └── sidebar_config.py
+│   └── pages/
+│       ├── 1_Page_One.py
+│       └── 2_Page_Two.py
+└── data/                      # Data files (gitignored)
+```
+
+#### sys.path pattern for pages
+
+Each page file (`streamlit_app/pages/*.py`) needs:
+
+```python
+import sys
+from pathlib import Path
+
+_project_root = str(Path(__file__).parent.parent.parent)
+sys.path.insert(0, _project_root)                          # for streamlit_app.utils.*
+sys.path.insert(0, str(Path(_project_root) / "src"))       # for project_name.*
+```
+
+The main `app.py` (`streamlit_app/app.py`) needs:
+
+```python
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent.parent))           # project root
+sys.path.insert(0, str(Path(__file__).parent.parent / "src"))   # src/
+sys.path.insert(0, str(Path(__file__).parent))                  # streamlit_app/ (for relative utils imports)
+```
+
+#### Launch command
+
+The app should launch with just `streamlit run streamlit_app/app.py` from
+the project root — no `PYTHONPATH` needed because the sys.path inserts
+handle it.
+
+#### Monorepo launch.json config
+
+```jsonc
+{
+    "name": "ProjectName: Streamlit App",
+    "type": "debugpy",
+    "request": "launch",
+    "module": "streamlit",
+    "justMyCode": true,
+    "console": "integratedTerminal",
+    "cwd": "${workspaceFolder}/project-name",
+    "env": {
+        "PYTHONPATH": "${workspaceFolder}/project-name/src;${workspaceFolder}/project-name",
+        "KERAS_BACKEND": "torch"
+    },
+    "args": [
+        "run",
+        "streamlit_app/app.py",
+        "--server.runOnSave",
+        "true"
+    ]
+}
+```
+
+Note: `PYTHONPATH` in launch.json is a belt-and-suspenders backup — the
+sys.path inserts in the code are the primary mechanism.
+
+#### Data defaults
+
+When defaulting date ranges from the database, use the analysis window
+(e.g. 2015-present) not the full DB range. Most tickers don't exist going
+back to 2000, creating huge sparse matrices filled with zeros.
+
+```python
+if 'start_date' not in st.session_state:
+    st.session_state.start_date = max(db_min_date, "2015-01-01")
+```
+
+#### Post-restructure testing
+
+After any restructure that changes imports or paths, test every page's
+actual functionality — not just that it loads without error:
+
+1. Data Explorer: refresh DB info, fetch data, check data quality
+2. Each analysis page: load data, run analysis, verify output is non-zero
+3. Training pages: load data, start training, verify metrics appear
+
 ### .gitignore
 
 ```
@@ -328,6 +432,9 @@ results/
 | `print()` for logging | `logging` module |
 | Committing `.env` | `.env.example` + `.gitignore` |
 | `launch.json` inside a subdirectory when workspace root is the parent | Detect Poetry root, place `launch.json` there |
+| Relying on `PYTHONPATH` for Streamlit imports | Explicit `sys.path.insert()` in every page file |
+| Defaulting date ranges to full DB range | Default to analysis window (e.g. 2015+) |
+| Testing only imports after restructure | Test every page button and verify output |
 
 ## Checklist
 
@@ -340,3 +447,6 @@ results/
 - [ ] `.vscode/launch.json` placed at correct level (Poetry root for monorepo, project root for standalone)
 - [ ] Monorepo configs prefixed with project name (e.g. "Reddit: Streamlit App")
 - [ ] Monorepo configs have `cwd` and `PYTHONPATH` set to project subdirectory
+- [ ] Streamlit pages have explicit `sys.path` inserts for both project root and `src/`
+- [ ] Streamlit app launches with just `streamlit run streamlit_app/app.py` (no env vars needed)
+- [ ] After restructure: every page button/function tested, not just imports
