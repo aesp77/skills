@@ -32,6 +32,27 @@ Before starting any work, read the relevant skills from `~/skills/skills/`.
 ### Read for CI/CD (optional — add when project is mature)
 - ~/skills/skills/ci-cd/SKILL.md
 
+## Work Mode
+
+Before starting any work, ask the user how they want to work:
+
+- **Interactive** (default) — Claude asks before each step, user reviews and approves.
+  Good for: new projects, complex upgrades, learning.
+
+- **Autonomous** — Claude works through the plan independently, commits progress,
+  and reports back when done or when stuck.
+  Good for: well-defined tasks, background work, overnight runs.
+  **Safety rule: autonomous mode ALWAYS works on a branch, never main.**
+  Start Claude Code with: `claude --dangerously-skip-permissions`
+
+If the user says "run autonomously", "work in background", or "just do it":
+1. Create a feature branch immediately (e.g. `feat/auto-<task-description>`)
+2. Work through the plan, committing after each step
+3. Run tests after each step — stop if tests fail
+4. Update PROGRESS.md as you go
+5. When done, report what was completed and what's left
+6. Do NOT merge to main — leave that for the user to review
+
 ## Commands
 
 ### "init" — New Project
@@ -44,6 +65,7 @@ Before starting any work, read the relevant skills from `~/skills/skills/`.
    - What data sources will it use?
    - Are there any reference papers or existing projects to base this on?
    - Any specific packages or approaches already in mind?
+   - **How do you want to work? (interactive or autonomous)**
 
 2. **Save the answers into this CLAUDE.md immediately:**
    - Add the project name and description at the top of this file (under the `# CLAUDE.md` heading)
@@ -72,6 +94,7 @@ Before starting any work, read the relevant skills from `~/skills/skills/`.
    - Are there any reference materials? (papers, other projects, docs)
    - What should NOT break? (existing notebooks, trained models, API interfaces)
    - What does success look like? (e.g. "same results, faster loading", "new model calibrates with RMSE < 0.01")
+   - **How do you want to work? (interactive or autonomous)**
 
 2. **Save the answers into CLAUDE.md immediately:**
    - Add the upgrade objective to **Current State**
