@@ -43,7 +43,23 @@ Before starting any work, ask the user how they want to work:
   and reports back when done or when stuck.
   Good for: well-defined tasks, background work, overnight runs.
   **Safety rule: autonomous mode ALWAYS works on a branch, never main.**
-  Start Claude Code with: `claude --dangerously-skip-permissions`
+
+### How to start autonomous mode
+
+```bash
+# 1. Start Claude Code with permissions skipped
+claude --dangerously-skip-permissions
+
+# 2. Enable Remote Control so you can monitor from phone/browser
+/rc
+
+# 3. Tell Claude what to do (init or upgrade), say "autonomous"
+
+# 4. Walk away — monitor from Claude app or claude.ai/code
+#    Claude works on a branch, commits progress, stops if tests fail
+```
+
+### Autonomous mode rules
 
 If the user says "run autonomously", "work in background", or "just do it":
 1. Create a feature branch immediately (e.g. `feat/auto-<task-description>`)
