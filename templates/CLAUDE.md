@@ -32,15 +32,26 @@ Before starting any work, read the relevant skills from `~/skills/skills/`.
 ### Read for CI/CD (optional — add when project is mature)
 - ~/skills/skills/ci-cd/SKILL.md
 
+## Quick Menu
+
+Type one of these to get started:
+
+| Command | What happens |
+|---------|-------------|
+| `init` | New project — interactive, step by step on main |
+| `init auto` | New project — autonomous, works on a branch |
+| `upgrade` | Existing project — interactive, step by step on a branch |
+| `upgrade auto` | Existing project — autonomous, works on a branch |
+
 ## Work Mode
 
-Before starting any work, ask the user how they want to work:
+When the user starts a session, detect the mode from their command:
 
-- **Interactive** (default) — Claude asks before each step, user reviews and approves.
+- **Interactive** (`init` or `upgrade`) — ask before each step, user reviews and approves.
   Good for: new projects, complex upgrades, learning.
 
-- **Autonomous** — Claude works through the plan independently, commits progress,
-  and reports back when done or when stuck.
+- **Autonomous** (`init auto` or `upgrade auto`) — work through the plan independently,
+  commit progress, and report back when done or when stuck.
   Good for: well-defined tasks, background work, overnight runs.
   **Safety rule: autonomous mode ALWAYS works on a branch, never main.**
 
