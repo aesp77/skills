@@ -1,40 +1,43 @@
 # CLAUDE.md
 
-## Shared Skills
+## IMPORTANT: Read Skills Before Any Work
 
-Before starting any work, read the relevant skills from `~/skills/skills/`.
+**MANDATORY:** Before writing ANY code, read the skills listed below that match
+the task. Do NOT skip skills. After completing work, run through each relevant
+skill's checklist to verify compliance.
 
-### Always read
-- ~/skills/skills/project-scaffold/SKILL.md
-- ~/skills/skills/env-setup/SKILL.md
-- ~/skills/skills/git-workflow/SKILL.md
+If the user says "check skills" — re-read all relevant skills and verify the
+current code against their rules and checklists. Report any violations.
 
-### Read for data work
-- ~/skills/skills/market-data/SKILL.md
-- ~/skills/skills/edav/SKILL.md
-- ~/skills/skills/experiment-logging/SKILL.md
+### Always read (every session)
+- ~/skills/skills/project-scaffold/SKILL.md — directory structure, launch.json, Streamlit layout
+- ~/skills/skills/env-setup/SKILL.md — Poetry detection, .env, credentials
+- ~/skills/skills/git-workflow/SKILL.md — init vs upgrade, branching, commits
 
-### Read for ML/model work
-- ~/skills/skills/keras3-pytorch/SKILL.md
-- ~/skills/skills/notebook-workflow/SKILL.md
-- ~/skills/skills/experiment-workflow/SKILL.md
-- ~/skills/skills/paper-replication/SKILL.md
+### Read when working with data
+- ~/skills/skills/market-data/SKILL.md — DB schema, incremental updates, copy between projects
+- ~/skills/skills/edav/SKILL.md — data quality, outliers, visualisation
+- ~/skills/skills/experiment-logging/SKILL.md — log runs, model registry, compare versions
 
-### Read for quant/finance work
-- ~/skills/skills/vol-and-curves/SKILL.md
-- ~/skills/skills/pricing/SKILL.md
-- ~/skills/skills/quant-patterns/SKILL.md
-- ~/skills/skills/backtesting/SKILL.md
+### Read when building ML models
+- ~/skills/skills/keras3-pytorch/SKILL.md — Keras 3, train/val/test, callbacks, data pipeline
+- ~/skills/skills/notebook-workflow/SKILL.md — notebook → module → Streamlit, README phases
+- ~/skills/skills/experiment-workflow/SKILL.md — hyperparameter tuning, model selection
+- ~/skills/skills/paper-replication/SKILL.md — NotebookLM → notebooks → src
 
-### Read for testing
-- ~/skills/skills/testing-conventions/SKILL.md
+### Read when writing quant/finance code
+- ~/skills/skills/vol-and-curves/SKILL.md — vol interpolation, rate curves, estimators, 252/365
+- ~/skills/skills/pricing/SKILL.md — BS, Greeks, Monte Carlo, PDE, payoffs
+- ~/skills/skills/quant-patterns/SKILL.md — calibration, state normalisation, convergence
+- ~/skills/skills/backtesting/SKILL.md — walk-forward, risk metrics, transaction costs
 
-### Read for CI/CD (optional — add when project is mature)
-- ~/skills/skills/ci-cd/SKILL.md
+### Read when writing tests
+- ~/skills/skills/testing-conventions/SKILL.md — staged testing, pytest, file discipline
+
+### Optional
+- ~/skills/skills/ci-cd/SKILL.md — GitHub Actions (add when project is mature)
 
 ## Quick Menu
-
-Type one of these to get started:
 
 | Command | What happens |
 |---------|-------------|
@@ -42,6 +45,21 @@ Type one of these to get started:
 | `init auto` | New project — autonomous, works on a branch |
 | `upgrade` | Existing project — interactive, step by step on a branch |
 | `upgrade auto` | Existing project — autonomous, works on a branch |
+| `check skills` | Re-read all relevant skills, verify code compliance, report violations |
+
+### Useful Claude Code commands
+
+| Command | What it does |
+|---------|-------------|
+| `Shift+Tab` | Cycle permission mode: default → acceptEdits → plan → auto |
+| `/plan` | Enter plan mode — Claude analyses without changing anything |
+| `/effort max` | Maximum thinking depth — use for planning and complex decisions |
+| `/effort medium` | Balanced — use for normal coding |
+| `/compact` | Compress conversation to free up tokens |
+| `/clear` | Start fresh (resets conversation) |
+| `@filename` | Reference a file directly in your prompt |
+| `Ctrl+O` | Show Claude's thinking process |
+| `/rc` | Enable Remote Control for phone/browser monitoring |
 
 ## Work Mode
 
