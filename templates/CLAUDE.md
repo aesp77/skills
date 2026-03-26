@@ -166,6 +166,23 @@ If the user says "run autonomously", "work in background", or "just do it":
 **CLAUDE.md** is the source of truth for project configuration.
 **PROGRESS.md** is the source of truth for what's been done and what's next.
 
+### At the start of every session
+
+Before doing any work, quickly review this CLAUDE.md and check:
+- Does **Architecture** still match the actual directory structure?
+- Does **Current State** reflect what's actually happening?
+- Are there **Project Rules** that have been superseded by new decisions?
+- Are there missing rules or constraints from recent work?
+
+If anything is stale, update it silently. If something significant changed,
+mention it to the user: "I noticed the architecture section was outdated —
+updated it to reflect the new data pipeline."
+
+Also read PROGRESS.md and check what's in "In Progress" and "Next" to
+understand where the project stands.
+
+### During a session
+
 When the user asks to change the project, update both files:
 
 **CLAUDE.md updates:**
