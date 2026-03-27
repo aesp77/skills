@@ -253,6 +253,40 @@ class CustomModel(keras.Model):
         return cvar_loss(pnl, alpha=0.5)
 ```
 
+### Checkpointing in Custom Loops
+
+When using fully custom training loops (not `keras.Model.fit`), you MUST
+implement checkpoint saving manually. The standard callback stack does not
+apply — you are responsible for equivalent behaviour.
+
+```python
+# Inside your custom train() method:
+import os
+
+checkpoint_dir = "checkpoints"
+os.makedirs(checkpoint_dir, exist_ok=True)
+
+for epoch in range(max_epochs):
+    metrics = self.train_epoch(...)
+
+    if epoch % val_freq == 0:
+        val = self.validate(...)
+
+        # Equivalent of ModelCheckpoint(save_best_only=True)
+        if val['loss'] < best_loss:
+            best_loss = val['loss']
+            torch.save(model.state_dict(), f"{checkpoint_dir}/best.pt")
+
+        # Periodic checkpoint for crash recovery
+        if epoch % 500 == 0:
+            torch.save({
+                'epoch': epoch,
+                'model_state': model.state_dict(),
+                'optimizer_state': optimizer.state_dict(),
+                'best_loss': best_loss,
+            }, f"{checkpoint_dir}/checkpoint_epoch_{epoch}.pt")
+```
+
 ### Learning Rate Scheduling
 
 ```python
@@ -386,6 +420,7 @@ def plot_training_history(history_or_csv="training_log.csv"):
 | Single train/test split | Always train / validation / test |
 | `.to("cuda")` / `.to("cpu")` | Let Keras 3 handle device placement |
 | Training on raw DataFrames/dicts | Convert to tensors first via `dataframe_to_tensors()` |
+| Custom training loop without checkpoints | Save best + periodic checkpoints |
 
 ## Checklist
 
