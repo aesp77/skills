@@ -37,6 +37,17 @@ current code against their rules and checklists. Report any violations.
 ### Optional
 - ~/skills/skills/ci-cd/SKILL.md — GitHub Actions (add when project is mature)
 
+## Agents
+
+Agents are specialist assistants defined in `~/skills/agents/`. They chain
+multiple skills together for multi-step tasks. You trigger them by describing
+what you want — you don't need to know agent names.
+
+- ~/skills/agents/skills-checker.md — audit project against skill checklists
+- ~/skills/agents/data-pipeline.md — set up and validate data end-to-end
+- ~/skills/agents/streamlit-builder.md — build Streamlit apps following conventions
+- ~/skills/agents/experiment-runner.md — run experiments with full logging and documentation
+
 ## Quick Menu
 
 | Command | What happens |
@@ -45,7 +56,10 @@ current code against their rules and checklists. Report any violations.
 | `init auto` | New project — autonomous, works on a branch |
 | `upgrade` | Existing project — interactive, step by step on a branch |
 | `upgrade auto` | Existing project — autonomous, works on a branch |
-| `check skills` | Re-read all relevant skills, verify code compliance, report violations |
+| `check skills` | Audit project against all skill checklists, report PASS/FAIL |
+| `set up data` | Copy from other projects → fetch gaps → run EDAV → report readiness |
+| `build a dashboard` | Discover src/ modules → create Streamlit pages → update launch.json |
+| `tune the model` | Set budget → run search → log every trial → document decision |
 
 ### Useful Claude Code commands
 

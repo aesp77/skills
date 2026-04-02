@@ -99,6 +99,22 @@ This repo (~/skills/)          Your project (~/my-project/)
 | [upgrade-repo](skills/upgrade-repo/SKILL.md) | Step-by-step repo upgrade on a branch |
 | [skills-manager](skills/skills-manager/SKILL.md) | Adding new skills, syncing across projects |
 
+## Agents
+
+Agents are specialist assistants that chain multiple skills together for
+multi-step tasks. You trigger them by describing what you want.
+
+| Agent | You say... | It does... |
+|-------|-----------|-----------|
+| [skills-checker](agents/skills-checker.md) | "check skills", "audit this" | Reads all relevant skill checklists, reports PASS/FAIL |
+| [data-pipeline](agents/data-pipeline.md) | "set up data", "check data quality" | Copy from other DBs → fetch gaps → EDAV → readiness verdict |
+| [streamlit-builder](agents/streamlit-builder.md) | "build a dashboard", "add a page" | Discovers src/ modules → creates pages → updates launch.json |
+| [experiment-runner](agents/experiment-runner.md) | "tune the model", "compare models" | Sets budget → runs search → logs trials → documents decision |
+
+Agents live in `agents/` and are referenced from the CLAUDE.md template.
+They read skills at runtime — when a skill is updated, agents automatically
+follow the latest version.
+
 ## Template
 
 One generic template — the `init` conversation customises it for your project:
