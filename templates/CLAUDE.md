@@ -37,29 +37,40 @@ current code against their rules and checklists. Report any violations.
 ### Optional
 - ~/skills/skills/ci-cd/SKILL.md — GitHub Actions (add when project is mature)
 
-## Agents
+## Two Phases of Development
 
-Agents are specialist assistants defined in `~/skills/agents/`. They chain
-multiple skills together for multi-step tasks. You trigger them by describing
-what you want — you don't need to know agent names.
+### Phase 1: Sequential (skills only)
+Exploration → notebooks → experiments → model training → validation.
+GPU-bound, human-guided. Claude reads skills in order, follows rules.
+No agents needed.
 
-- ~/skills/agents/skills-checker.md — audit project against skill checklists
-- ~/skills/agents/data-pipeline.md — set up and validate data end-to-end
-- ~/skills/agents/streamlit-builder.md — build Streamlit apps following conventions
-- ~/skills/agents/experiment-runner.md — run experiments with full logging and documentation
+**Skill chain for each step:**
+- `init/upgrade` → project-scaffold, env-setup, git-workflow
+- `set up data` → market-data, env-setup, then edav
+- `paper study` → paper-replication, notebooklm-paper-to-implementation
+- `notebooks` → notebook-workflow, keras3-pytorch, pricing/vol-and-curves/quant-patterns
+- `experiments` → experiment-workflow, experiment-logging, keras3-pytorch
+- `backtesting` → backtesting, experiment-logging
+
+### Phase 2: Parallel (agents)
+Once experiments are done, say **"build the app"** or **"go to production"**.
+Four agents run in parallel — no GPU needed, independent tasks:
+
+- ~/skills/agents/streamlit-builder.md — creates Streamlit pages from src/ modules
+- ~/skills/agents/skills-checker.md — audits all skill checklists, reports PASS/FAIL
+- ~/skills/agents/test-builder.md — creates tests for extracted modules
+- ~/skills/agents/code-quality.md — lint fixes, refactoring, structure cleanup
 
 ## Quick Menu
 
-| Command | What happens |
-|---------|-------------|
-| `init` | New project — interactive, step by step on main |
-| `init auto` | New project — autonomous, works on a branch |
-| `upgrade` | Existing project — interactive, step by step on a branch |
-| `upgrade auto` | Existing project — autonomous, works on a branch |
-| `check skills` | Audit project against all skill checklists, report PASS/FAIL |
-| `set up data` | Copy from other projects → fetch gaps → run EDAV → report readiness |
-| `build a dashboard` | Discover src/ modules → create Streamlit pages → update launch.json |
-| `tune the model` | Set budget → run search → log every trial → document decision |
+| Command | Phase | What happens |
+|---------|-------|-------------|
+| `init` | 1 | New project — interactive, step by step on main |
+| `init auto` | 1 | New project — autonomous, works on a branch |
+| `upgrade` | 1 | Existing project — interactive, step by step on a branch |
+| `upgrade auto` | 1 | Existing project — autonomous, works on a branch |
+| `check skills` | 2 | Audit project against all skill checklists |
+| `build the app` | 2 | Launch all 4 agents in parallel — Streamlit, tests, quality, audit |
 
 ### Useful Claude Code commands
 
